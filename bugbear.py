@@ -137,6 +137,31 @@ class BugBearVisitor(ast.NodeVisitor):
                     )
         self.generic_visit(node)
 
+    def visit_FunctionDef(self, node):
+        xs = list(node.body)
+        has_yield = False
+        has_return = False
+        while xs:
+            x = xs.pop()
+            if isinstance(x, (ast.Yield, ast.YieldFrom)):
+                has_yield = True
+            elif isinstance(x, ast.Return) and x.value is not None:
+                has_return = True
+
+
+            if has_yield and has_return:
+                self.errors.append(
+                    B307(node.lineno, node.col_offset)
+                )
+                break
+
+            if hasattr(x, 'body'):
+                xs.extend(x.body)
+            if hasattr(x, 'value'):
+                xs.append(x.value)
+
+        self.generic_visit(node)
+
     def compose_call_path(self, node):
         if isinstance(node, ast.Attribute):
             yield from self.compose_call_path(node.value)
@@ -227,5 +252,11 @@ B306 = partial(
             "2.6 and is removed in Python 3. Use ``str(e)`` to access the "
             "user-readable message. Use ``e.args`` to access arguments passed "
             "to the exception.",
+    type=BugBearChecker,
+)
+
+B307 = partial(
+    error,
+    message="B307: Using ``yield`` together with ``return x``.",
     type=BugBearChecker,
 )
