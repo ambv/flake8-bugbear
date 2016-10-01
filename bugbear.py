@@ -152,7 +152,6 @@ class BugBearVisitor(ast.NodeVisitor):
             elif isinstance(x, ast.Return) and x.value is not None:
                 has_return = True
 
-
             if has_yield and has_return:
                 self.errors.append(
                     B901(node.lineno, node.col_offset)
