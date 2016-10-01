@@ -1,6 +1,6 @@
 """
 Should emit:
-B307 - on lines 6 and 34
+B901 - on lines 6 and 34
 """
 
 def broken():

@@ -2,7 +2,7 @@ from pathlib import Path
 import unittest
 
 from bugbear import BugBearChecker
-from bugbear import B001, B002, B003, B301, B302, B303, B304, B305, B306, B307
+from bugbear import B001, B002, B003, B301, B302, B303, B304, B305, B306, B901
 
 
 class BugbearTestCase(unittest.TestCase):
@@ -64,13 +64,13 @@ class BugbearTestCase(unittest.TestCase):
             [B306(9, 10)],
         )
 
-    def test_b307(self):
-        filename = Path(__file__).absolute().parent / 'b307.py'
+    def test_b901(self):
+        filename = Path(__file__).absolute().parent / 'b901.py'
         bbc = BugBearChecker(filename=str(filename))
         errors = list(bbc.run())
         self.assertEqual(
             errors,
-            [B307(6, 0), B307(34, 0)]
+            [B901(6, 0), B901(34, 0)]
         )
 
 

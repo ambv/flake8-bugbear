@@ -50,6 +50,10 @@ class BugBearChecker(object):
         if not self.tree:
             self.tree = ast.parse("".join(self.lines))
 
+    @staticmethod
+    def add_options(optmanager):
+        optmanager.extend_default_ignore(disabled_by_default)
+
 
 @attr.s
 class BugBearVisitor(ast.NodeVisitor):
@@ -151,7 +155,7 @@ class BugBearVisitor(ast.NodeVisitor):
 
             if has_yield and has_return:
                 self.errors.append(
-                    B307(node.lineno, node.col_offset)
+                    B901(node.lineno, node.col_offset)
                 )
                 break
 
@@ -255,8 +259,12 @@ B306 = partial(
     type=BugBearChecker,
 )
 
-B307 = partial(
+B901 = partial(
     error,
-    message="B307: Using ``yield`` together with ``return x``.",
+    message=("B901: Using ``yield`` together with ``return x``. Use ``raise "
+             "StopIteration(x)`` instead of ``return x`` if this was "
+             "intentional."),
     type=BugBearChecker,
 )
+
+disabled_by_default = ["B901"]

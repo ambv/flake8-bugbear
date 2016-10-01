@@ -74,9 +74,19 @@ builtin. For Python 2 compatibility, use ``six.next()``.
 and is removed in Python 3. Use ``str(e)`` to access the user-readable
 message. Use ``e.args`` to access arguments passed to the exception.
 
-**B307**: Using ``return x`` in a generator function is syntactically invalid
+
+Opinionated warnings
+~~~~~~~~~~~~~~~~~~~~
+
+Those warnings are disabled by default because the opinions they come from are
+controversial.
+
+**B901**: Using ``return x`` in a generator function is syntactically invalid
 in Python 2, but in Python 3 ``return x`` in a generator function means ``raise
-StopIteration(x)``.
+StopIteration(x)``. Users that come from Python 2 may be used to Python 2
+rejecting code that mixes both, so this can lead to situations where it looks
+like ``return x`` makes the function generate an empty sequence. Use the more
+explicit ``raise StopIteration(x)`` instead of ``return x``.
 
 
 Tests
