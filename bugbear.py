@@ -159,10 +159,7 @@ class BugBearVisitor(ast.NodeVisitor):
                 )
                 break
 
-            if hasattr(x, 'body'):
-                xs.extend(x.body)
-            if hasattr(x, 'value'):
-                xs.append(x.value)
+            xs.extend(ast.iter_child_nodes(x))
 
         self.generic_visit(node)
 
