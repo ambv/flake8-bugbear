@@ -144,17 +144,17 @@ class BugBearVisitor(ast.NodeVisitor):
     def visit_FunctionDef(self, node):
         xs = list(node.body)
         has_yield = False
-        has_return = False
+        return_node = None
         while xs:
             x = xs.pop()
             if isinstance(x, (ast.Yield, ast.YieldFrom)):
                 has_yield = True
             elif isinstance(x, ast.Return) and x.value is not None:
-                has_return = True
+                return_node = x
 
-            if has_yield and has_return:
+            if has_yield and return_node is not None:
                 self.errors.append(
-                    B901(node.lineno, node.col_offset)
+                    B901(return_node.lineno, return_node.col_offset)
                 )
                 break
 

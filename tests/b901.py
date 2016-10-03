@@ -1,6 +1,6 @@
 """
 Should emit:
-B901 - on lines 6 and 34
+B901 - on lines 8, 35
 """
 
 def broken():
@@ -40,3 +40,8 @@ def broken2():
 async def not_broken4():
     yield 2
     return 1
+
+
+def actually_not_broken():
+    yield 2
+    return 1  # noqa
