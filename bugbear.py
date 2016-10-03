@@ -257,9 +257,9 @@ B306 = partial(
 
 B901 = partial(
     error,
-    message=("B901: Using ``yield`` together with ``return x``. Use ``raise "
-             "StopIteration(x)`` instead of ``return x`` if this was "
-             "intentional."),
+    message=("B901: Using ``yield`` together with ``return x``. Use native "
+             "``async def`` coroutines or put a ``# noqa`` comment on this "
+             "line if this was intentional."),
     type=BugBearChecker,
 )
 
