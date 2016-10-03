@@ -35,3 +35,8 @@ def broken2():
     return [3, 2, 1]
 
     yield from not_broken()
+
+
+async def not_broken4():
+    yield 2
+    return 1
