@@ -33,7 +33,7 @@ setup(
     license='MIT',
     py_modules=['bugbear'],
     zip_safe=False,
-    install_requires = ['flake8 >= 2.6.2', 'attrs'],
+    install_requires = ['flake8 >= 3.0.0', 'attrs'],
     test_suite='tests.test_bugbear',
     classifiers=[
         'Development Status :: 3 - Alpha',
