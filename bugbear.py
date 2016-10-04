@@ -159,7 +159,9 @@ class BugBearVisitor(ast.NodeVisitor):
         return_node = None
         while xs:
             x = xs.pop()
-            if isinstance(x, (ast.Yield, ast.YieldFrom)):
+            if isinstance(x, (ast.AsyncFunctionDef, ast.FunctionDef)):
+                continue
+            elif isinstance(x, (ast.Yield, ast.YieldFrom)):
                 has_yield = True
             elif isinstance(x, ast.Return) and x.value is not None:
                 return_node = x
