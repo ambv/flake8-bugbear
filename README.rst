@@ -107,9 +107,10 @@ Users coming from Python 2 may expect the old behavior which might lead
 to bugs.  Use native ``async def`` coroutines or mark intentional
 ``return x`` usage with ``# noqa`` on the same line.
 
-**B902**: Invalid first argument used for method. Use ``self`` for
-instance methods, and `cls` for class methods (which includes `__new__`
-and `__init_subclass__`).
+**B902**: Invalid first argument used for method. Use ``self`` for instance
+methods, and `cls` for class methods (which includes `__new__` and
+`__init_subclass__`) or instance methods of metaclasses. Note that this lint
+can only detect metaclasses if they directly inherit from ``type``.
 
 **B950**: Line too long. This is a pragmatic equivalent of ``pycodestyle``'s
 E501: it considers "max-line-length" but only triggers when the value has been

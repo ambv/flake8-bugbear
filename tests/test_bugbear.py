@@ -146,6 +146,7 @@ class BugbearTestCase(unittest.TestCase):
                 B902(39, 22, vars=("*args", 'instance', 'self')),
                 B902(45, 30, vars=("**kwargs", 'instance', 'self')),
                 B902(48, 32, vars=("*, self", 'instance', 'self')),
+                B902(58, 17, vars=("'self'", 'metaclass instance', 'cls')),
             )
         )
 

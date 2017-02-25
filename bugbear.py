@@ -319,6 +319,10 @@ class BugBearVisitor(ast.NodeVisitor):
         ):
             expected_first_args = B902.cls
             kind = 'class'
+        elif any(getattr(x, 'id', None) == 'type'
+                 for x in self.node_stack[-2].bases):
+            expected_first_args = B902.cls
+            kind = 'metaclass instance'
         else:
             expected_first_args = B902.self
             kind = 'instance'

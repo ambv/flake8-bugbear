@@ -47,3 +47,13 @@ class Warnings:
 
     def invalid_keyword_only(*, self):
         ...
+
+
+class Meta(type):
+    def __init__(cls, name, bases, d):
+        ...
+
+
+class OtherMeta(type):
+    def __init__(self, name, bases, d):
+        ...
