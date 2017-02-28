@@ -112,6 +112,12 @@ instance methods, and `cls` for class methods (which includes `__new__`
 and `__init_subclass__`) or instance methods of metaclasses (detected as
 classes directly inheriting from ``type``).
 
+**B903**: Use ``collections.namedtuple`` (or ``typing.NamedTuple``) for
+data classes that only set attributes in an ``__init__`` method, and do
+nothing else. If the attributes should be immutable, define the attributes
+in ``__slots__`` to save per-instance memory and to prevent accidentally 
+creating additional attributes on instances.
+
 **B950**: Line too long. This is a pragmatic equivalent of ``pycodestyle``'s
 E501: it considers "max-line-length" but only triggers when the value has been
 exceeded by **more than 10%**. You will no longer be forced to reformat code
@@ -188,6 +194,8 @@ MIT
 
 Change Log
 ----------
+
+* introduced B903 (patch contributed by Martijn Pieters)
 
 17.2.1
 ~~~~~~

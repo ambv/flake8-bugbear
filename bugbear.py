@@ -226,6 +226,10 @@ class BugBearVisitor(ast.NodeVisitor):
         self.check_for_b006(node)
         self.generic_visit(node)
 
+    def visit_ClassDef(self, node):
+        self.check_for_b903(node)
+        self.generic_visit(node)
+
     def compose_call_path(self, node):
         if isinstance(node, ast.Attribute):
             yield from self.compose_call_path(node.value)
@@ -375,6 +379,26 @@ class BugBearVisitor(ast.NodeVisitor):
                 )
             )
 
+    def check_for_b903(self, node):
+        if (len(node.body) != 1 or
+                not isinstance(node.body[0], ast.FunctionDef) or
+                node.body[0].name != '__init__'):
+            # only classes with *just* an __init__ method are interesting
+            return
+
+        # all the __init__ function does is a series of assignments to attributes
+        for stmt in node.body[0].body:
+            if not isinstance(stmt, ast.Assign):
+                return
+            targets = stmt.targets
+            if len(targets) > 1 or not isinstance(targets[0], ast.Attribute):
+                return
+            if not isinstance(stmt.value, ast.Name):
+                return
+
+        self.errors.append(
+            B903(node.lineno, node.col_offset))
+
 
 @attr.s
 class NameFinder(ast.NodeVisitor):
@@ -522,8 +546,14 @@ B902.self = ['self']  # it's a list because the first is preferred
 B902.cls = ['cls', 'klass']  # ditto.
 B902.metacls = ['metacls', 'metaclass', 'typ']  # ditto.
 
+B903 = Error(
+    message="B903 Data class should either be immutable or use __slots__ to "
+            "save memory. Use collections.namedtuple to generate an immutable "
+            "class, or enumerate the attributes in a __slot__ declaration in "
+            "the class to leave attributes mutable.")
+
 B950 = Error(
     message='B950 line too long ({} > {} characters)',
 )
 
-disabled_by_default = ["B901", "B902", "B950"]
+disabled_by_default = ["B901", "B902", "B903", "B950"]

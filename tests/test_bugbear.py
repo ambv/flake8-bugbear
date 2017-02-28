@@ -19,6 +19,7 @@ from bugbear import (
     B306,
     B901,
     B902,
+    B903,
     B950,
 )
 
@@ -149,6 +150,15 @@ class BugbearTestCase(unittest.TestCase):
                 B902(62, 17, vars=("'self'", 'metaclass instance', 'cls')),
                 B902(66, 20, vars=("'cls'", 'metaclass class', 'metacls')),
             )
+        )
+
+    def test_b903(self):
+        filename = Path(__file__).absolute().parent / 'b903.py'
+        bbc = BugBearChecker(filename=str(filename))
+        errors = list(bbc.run())
+        self.assertEqual(
+            errors,
+            self.errors(B903(32, 0)),
         )
 
     def test_b950(self):
