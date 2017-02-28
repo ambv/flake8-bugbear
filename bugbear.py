@@ -380,7 +380,7 @@ class BugBearVisitor(ast.NodeVisitor):
             )
 
     def check_for_b903(self, node):
-        body = node.body[:]
+        body = node.body
         if body and isinstance(body[0], ast.Expr) and isinstance(body[0].value, ast.Str):
             # Ignore the docstring
             body = body[1:]
