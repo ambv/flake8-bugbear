@@ -380,14 +380,21 @@ class BugBearVisitor(ast.NodeVisitor):
             )
 
     def check_for_b903(self, node):
-        if (len(node.body) != 1 or
-                not isinstance(node.body[0], ast.FunctionDef) or
-                node.body[0].name != '__init__'):
+        body = node.body[:]
+        if body and isinstance(body[0], ast.Expr) and isinstance(body[0].value, ast.Str):
+            # Ignore the docstring
+            body = body[1:]
+
+        if (
+            len(body) != 1 or
+            not isinstance(body[0], ast.FunctionDef) or
+            body[0].name != '__init__'
+        ):
             # only classes with *just* an __init__ method are interesting
             return
 
         # all the __init__ function does is a series of assignments to attributes
-        for stmt in node.body[0].body:
+        for stmt in body[0].body:
             if not isinstance(stmt, ast.Assign):
                 return
             targets = stmt.targets

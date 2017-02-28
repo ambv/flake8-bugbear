@@ -33,3 +33,10 @@ class Warnings:
     def __init__(self, foo, bar):
         self.foo = foo
         self.bar = bar
+
+
+class WarningsWithDocstring:
+    """A docstring should not be an impediment to a warning"""
+    def __init__(self, foo, bar):
+        self.foo = foo
+        self.bar = bar

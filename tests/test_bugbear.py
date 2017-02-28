@@ -158,7 +158,7 @@ class BugbearTestCase(unittest.TestCase):
         errors = list(bbc.run())
         self.assertEqual(
             errors,
-            self.errors(B903(32, 0)),
+            self.errors(B903(32, 0), B903(38, 0)),
         )
 
     def test_b950(self):
