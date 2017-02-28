@@ -114,7 +114,7 @@ classes directly inheriting from ``type``).
 
 **B903**: Use ``collections.namedtuple`` (or ``typing.NamedTuple``) for
 data classes that only set attributes in an ``__init__`` method, and do
-nothing else. If the attributes should be immutable, define the attributes
+nothing else. If the attributes should be mutable, define the attributes
 in ``__slots__`` to save per-instance memory and to prevent accidentally 
 creating additional attributes on instances.
 
