@@ -91,7 +91,7 @@ class BugBearChecker:
         specifying anything in `ignore = ` implicitly enables all optional
         warnings.  This function is a workaround for this behavior.
 
-        As documented in the READM, the user is expected to explicitly select
+        As documented in the README, the user is expected to explicitly select
         the warnings.
         """
         if code[:2] != 'B9':
@@ -200,7 +200,7 @@ class BugBearVisitor(ast.NodeVisitor):
 
     def visit_Assign(self, node):
         if isinstance(self.node_stack[-2], ast.ClassDef):
-            # note: by hasattr belowe we're ignoring starred arguments, slices
+            # note: by hasattr below we're ignoring starred arguments, slices
             # and tuples for simplicity.
             assign_targets = {t.id for t in node.targets if hasattr(t, 'id')}
             if '__metaclass__' in assign_targets:

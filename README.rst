@@ -186,7 +186,7 @@ that, right?  `six <https://pypi.python.org/pypi/six>`_ or
 By making the code exclusively Python 3.5+, I'm able to focus on the
 quality of the checks and re-use all the nice features of the new
 releases (check out `pathlib <docs.python.org/3/library/pathlib.html>`_)
-instead of wasting cycles on Unicode compatiblity, etc.
+instead of wasting cycles on Unicode compatibility, etc.
 
 
 License
