@@ -13,6 +13,9 @@ class NoWarnings:
     def method(self, arg1, *, yeah):
         ...
 
+    async def async_method(self, arg1, *, yeah):
+        ...
+
     @classmethod
     def someclassmethod(cls, arg1, with_default=None):
         ...
@@ -46,6 +49,9 @@ class Warnings:
         ...
 
     def invalid_keyword_only(*, self):
+        ...
+
+    async def async_invalid_keyword_only(*, self):
         ...
 
 

@@ -198,6 +198,11 @@ MIT
 Change Log
 ----------
 
+17.4.0
+~~~~~~
+
+* bugfix: Also check async methods for B006 + B902
+
 17.3.0
 ~~~~~~
 

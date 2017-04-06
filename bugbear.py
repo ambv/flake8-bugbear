@@ -220,6 +220,11 @@ class BugBearVisitor(ast.NodeVisitor):
         self.check_for_b007(node)
         self.generic_visit(node)
 
+    def visit_AsyncFunctionDef(self, node):
+        self.check_for_b902(node)
+        self.check_for_b006(node)
+        self.generic_visit(node)
+
     def visit_FunctionDef(self, node):
         self.check_for_b901(node)
         self.check_for_b902(node)

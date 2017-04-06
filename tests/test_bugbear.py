@@ -82,7 +82,8 @@ class BugbearTestCase(unittest.TestCase):
         errors = list(bbc.run())
         self.assertEqual(
             errors,
-            self.errors(B006(8, 24), B006(12, 29), B006(16, 19), B006(20, 19)),
+            self.errors(B006(8, 24), B006(12, 29), B006(16, 19), B006(20, 19),
+                        B006(23, 31)),
         )
 
     def test_b007(self):
@@ -140,15 +141,16 @@ class BugbearTestCase(unittest.TestCase):
         self.assertEqual(
             errors,
             self.errors(
-                B902(26, 17, vars=("'i_am_special'", 'instance', 'self')),
-                B902(29, 30, vars=("'cls'", 'instance', 'self')),
-                B902(32, 4, vars=("(none)", 'instance', 'self',)),
-                B902(36, 12, vars=("'self'", 'class', 'cls')),
-                B902(39, 22, vars=("*args", 'instance', 'self')),
-                B902(45, 30, vars=("**kwargs", 'instance', 'self')),
-                B902(48, 32, vars=("*, self", 'instance', 'self')),
-                B902(62, 17, vars=("'self'", 'metaclass instance', 'cls')),
-                B902(66, 20, vars=("'cls'", 'metaclass class', 'metacls')),
+                B902(29, 17, vars=("'i_am_special'", 'instance', 'self')),
+                B902(32, 30, vars=("'cls'", 'instance', 'self')),
+                B902(35, 4, vars=("(none)", 'instance', 'self',)),
+                B902(39, 12, vars=("'self'", 'class', 'cls')),
+                B902(42, 22, vars=("*args", 'instance', 'self')),
+                B902(48, 30, vars=("**kwargs", 'instance', 'self')),
+                B902(51, 32, vars=("*, self", 'instance', 'self')),
+                B902(54, 44, vars=("*, self", 'instance', 'self')),
+                B902(68, 17, vars=("'self'", 'metaclass instance', 'cls')),
+                B902(72, 20, vars=("'cls'", 'metaclass class', 'metacls')),
             )
         )
 
