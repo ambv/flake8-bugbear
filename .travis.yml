@@ -3,7 +3,6 @@ cache: pip
 python:
     - 3.5
     - 3.6
-    - 3.6-dev
     - 3.7-dev
 install: pip install -e .
 script: python setup.py test
