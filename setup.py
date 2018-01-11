@@ -37,6 +37,7 @@ setup(
     license='MIT',
     py_modules=['bugbear'],
     zip_safe=False,
+    python_requires=">=3.5",
     install_requires=['flake8 >= 3.0.0', 'attrs'],
     test_suite='tests.test_bugbear',
     classifiers=[
