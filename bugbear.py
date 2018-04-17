@@ -24,7 +24,7 @@ class BugBearChecker:
     filename = attr.ib(default='(none)')
     lines = attr.ib(default=None)
     max_line_length = attr.ib(default=79)
-    visitor = attr.ib(default=attr.Factory(lambda: BugBearVisitor))
+    visitor = attr.ib(init=False, default=attr.Factory(lambda: BugBearVisitor))
     options = attr.ib(default=None)
 
     def run(self):
