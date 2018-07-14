@@ -22,5 +22,5 @@ from somewhere import strip, other_type
 
 strip("we")  # no warning
 other_type().lstrip()  # no warning
-other_type().rstrip(['a', 'b', 'c'])  # no warning
+other_type().rstrip(["a", "b", "c"])  # no warning
 other_type().strip("a", "b")  # no warning

@@ -5,6 +5,9 @@ flake8-bugbear
 .. image:: https://travis-ci.org/PyCQA/flake8-bugbear.svg?branch=master
     :target: https://travis-ci.org/PyCQA/flake8-bugbear
 
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/ambv/black
+
 A plugin for Flake8 finding likely bugs and design problems in your
 program.  Contains warnings that don't belong in pyflakes and
 pycodestyle::

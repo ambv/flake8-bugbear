@@ -36,14 +36,14 @@ except BaseException:
 
 def func(**kwargs):
     try:
-        is_debug = kwargs['debug']
+        is_debug = kwargs["debug"]
     except:
         # should be except KeyError:
         return
 
     results = something.call(debug=is_debug)
     try:
-        results['ok']
+        results["ok"]
     except:  # noqa
         # warning silenced
         return

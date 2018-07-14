@@ -8,7 +8,7 @@ class NoWarningsMoreMethods:
 
 
 class NoWarningsClassAttributes:
-    spam = 'ham'
+    spam = "ham"
 
     def __init__(self, foo, bar):
         self.foo = foo
@@ -19,12 +19,12 @@ class NoWarningsComplicatedAssignment:
     def __init__(self, foo, bar):
         self.foo = foo
         self.bar = bar
-        self.spam = ' - '.join([foo, bar])
+        self.spam = " - ".join([foo, bar])
 
 
 class NoWarningsMoreStatements:
     def __init__(self, foo, bar):
-        foo = ' - '.join([foo, bar])
+        foo = " - ".join([foo, bar])
         self.foo = foo
         self.bar = bar
 
@@ -37,6 +37,7 @@ class Warnings:
 
 class WarningsWithDocstring:
     """A docstring should not be an impediment to a warning"""
+
     def __init__(self, foo, bar):
         self.foo = foo
         self.bar = bar

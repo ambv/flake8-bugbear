@@ -11,6 +11,7 @@ import six
 from six import iterkeys
 from future.utils import itervalues
 
+
 def this_is_okay():
     d = {}
     iterkeys(d)
@@ -31,6 +32,7 @@ def this_is_okay():
     future.utils.viewlists(d)
     six.next(d)
     builtins.next(d)
+
 
 def everything_else_is_wrong():
     d = None  # note: bugbear is no type checker
