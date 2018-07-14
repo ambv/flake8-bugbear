@@ -1,8 +1,8 @@
 """
 Should emit:
-B301 - on lines 33-36
-B302 - on lines 37-40
-B305 - on lines 37-40
+B301 - on lines 39-42
+B302 - on lines 43-46
+B305 - on lines 47-48
 """
 
 import builtins  # future's builtins really

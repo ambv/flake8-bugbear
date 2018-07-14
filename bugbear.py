@@ -131,7 +131,7 @@ class BugBearVisitor(ast.NodeVisitor):
     def visit(self, node):
         self.node_stack.append(node)
         self.node_window.append(node)
-        self.node_window = self.node_window[-self.NODE_WINDOW_SIZE :]
+        self.node_window = self.node_window[-self.NODE_WINDOW_SIZE:]
         super().visit(node)
         self.node_stack.pop()
 
@@ -161,7 +161,7 @@ class BugBearVisitor(ast.NodeVisitor):
             with suppress(AttributeError, IndexError):
                 if (
                     node.func.id in ("getattr", "hasattr")
-                    and node.args[1].s == "__call__"
+                    and node.args[1].s == "__call__"  # noqa: W503
                 ):
                     self.errors.append(B004(node.lineno, node.col_offset))
 
@@ -296,7 +296,7 @@ class BugBearVisitor(ast.NodeVisitor):
         if "type" in bases:
             if (
                 "classmethod" in decorators.names
-                or node.name in B902.implicit_classmethods
+                or node.name in B902.implicit_classmethods  # noqa: W503
             ):
                 expected_first_args = B902.metacls
                 kind = "metaclass class"
@@ -306,7 +306,7 @@ class BugBearVisitor(ast.NodeVisitor):
         else:
             if (
                 "classmethod" in decorators.names
-                or node.name in B902.implicit_classmethods
+                or node.name in B902.implicit_classmethods  # noqa: W503
             ):
                 expected_first_args = B902.cls
                 kind = "class"
@@ -351,16 +351,16 @@ class BugBearVisitor(ast.NodeVisitor):
         body = node.body
         if (
             body
-            and isinstance(body[0], ast.Expr)
-            and isinstance(body[0].value, ast.Str)
+            and isinstance(body[0], ast.Expr)  # noqa: W503
+            and isinstance(body[0].value, ast.Str)  # noqa: W503
         ):
             # Ignore the docstring
             body = body[1:]
 
         if (
             len(body) != 1
-            or not isinstance(body[0], ast.FunctionDef)
-            or body[0].name != "__init__"
+            or not isinstance(body[0], ast.FunctionDef)  # noqa: W503
+            or body[0].name != "__init__"  # noqa: W503
         ):
             # only classes with *just* an __init__ method are interesting
             return

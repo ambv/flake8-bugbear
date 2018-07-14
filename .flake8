@@ -3,6 +3,6 @@
 
 [flake8]
 ignore = E302, E501
-max-line-length = 80
+max-line-length = 88
 max-complexity = 12
 select = B,C,E,F,W,B9

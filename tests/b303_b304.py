@@ -1,7 +1,7 @@
 """
 Should emit:
-B303 - on line 21
-B304 - on line 38
+B303 - on line 25
+B304 - on line 42
 """
 
 import sys

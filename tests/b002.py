@@ -1,6 +1,6 @@
 """
 Should emit:
-B002 - on lines 13 and 17
+B002 - on lines 15 and 20
 """
 
 
