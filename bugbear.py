@@ -165,6 +165,9 @@ class BugBearVisitor(ast.NodeVisitor):
                 ):
                     self.errors.append(B004(node.lineno, node.col_offset))
 
+        if isinstance(node.func, ast.Name):
+            self.check_for_b009(node)
+
         self.generic_visit(node)
 
     def visit_Attribute(self, node):
@@ -260,6 +263,12 @@ class BugBearVisitor(ast.NodeVisitor):
         for name in sorted(ctrl_names - used_names):
             n = targets.names[name][0]
             self.errors.append(B007(n.lineno, n.col_offset, vars=(name,)))
+
+    def check_for_b009(self, node):
+        func_id = node.func.id
+        if func_id in ('dict', 'set'):
+            if node.args and isinstance(node.args[0], ast.ListComp):
+                self.errors.append(B009(node.lineno, node.col_offset))
 
     def check_for_b901(self, node):
         xs = list(node.body)
@@ -471,6 +480,11 @@ B008 = Error(
     "variable and use that variable as a default value."
 )
 
+B009 = Error(
+    message="B009 You can use a generator here instead of a list. This "
+    "is more efficient and avoids creating a brand new list and then "
+    "immedialety throwing it away."
+)
 
 # Those could be false positives but it's more dangerous to let them slip
 # through if they're not.
