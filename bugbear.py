@@ -164,6 +164,18 @@ class BugBearVisitor(ast.NodeVisitor):
                     and node.args[1].s == "__call__"  # noqa: W503
                 ):
                     self.errors.append(B004(node.lineno, node.col_offset))
+                if (
+                    node.func.id == "getattr"
+                    and len(node.args) == 2  # noqa: W503
+                    and isinstance(node.args[1], ast.Str)  # noqa: W503
+                ):
+                    self.errors.append(B009(node.lineno, node.col_offset))
+                elif (
+                    node.func.id == "setattr"
+                    and len(node.args) == 3  # noqa: W503
+                    and isinstance(node.args[1], ast.Str)  # noqa: W503
+                ):
+                    self.errors.append(B010(node.lineno, node.col_offset))
 
         self.generic_visit(node)
 
@@ -474,6 +486,14 @@ B008.immutable_calls = {
     'tuple',
     'frozenset',
 }
+B009 = Error(
+    message="B009 Do not call getattr with a constant attribute value, "
+    "it is not any safer than normal property access."
+)
+B010 = Error(
+    message="B010 Do not call setattr with a constant attribute value, "
+    "it is not any safer than normal property access."
+)
 
 
 # Those could be false positives but it's more dangerous to let them slip

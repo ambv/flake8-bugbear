@@ -80,6 +80,16 @@ function will reuse the result of that definition-time call.  If this is
 intended, assign the function call to a module-level variable and use
 that variable as a default value.
 
+**B009**: Do not call ``getattr(x, 'attr')``, instead use normal
+property access: ``x.attr``. Missing a default to ``getattr`` will cause
+an ``AttributeError`` to be raised for non-existent properties. There is
+no additional safety in using ``getattr`` if you know the attribute name
+ahead of time.
+
+**B010**: Do not call ``setattr(x, 'attr', val)``, instead use normal
+property access: ``x.attr = val``. There is no additional safety in
+using ``setattr`` if you know the attribute name ahead of time.
+
 
 Python 3 compatibility warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
