@@ -93,6 +93,10 @@ using ``setattr`` if you know the attribute name ahead of time.
 **B011**: Do not call `assert False` since `python -O` removes these calls.
 Instead callers should `raise AssertionError()`.
 
+**B012**: Shebang is present but the file is not executable.
+
+**B013**: The file is executable but no shebang is present.
+
 
 Python 3 compatibility warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

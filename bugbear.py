@@ -4,6 +4,7 @@ from contextlib import suppress
 from functools import lru_cache, partial
 import itertools
 import logging
+import os
 
 import attr
 import pycodestyle
@@ -44,6 +45,15 @@ class BugBearChecker:
         The following simple checks are based on the raw lines, not the AST.
         """
         for lineno, line in enumerate(self.lines, start=1):
+            if lineno == 1 and os.name != 'nt':  # first line, check for shebang
+                is_shebang = line.startswith('#!')
+                executable = os.access(self.filename, os.X_OK)
+                if is_shebang and not executable:
+                    yield B012(lineno, 0)
+                elif not is_shebang and executable:
+                    # In principle, this error may also be yielded on empty
+                    # files, but flake8 seems to always skip empty files.
+                    yield B013(lineno, 0)
             length = len(line) - 1
             if length > 1.1 * self.max_line_length:
                 yield B950(lineno, length, vars=(length, self.max_line_length))
@@ -504,6 +514,12 @@ B010 = Error(
 B011 = Error(
     message="B011 Do not call assert False since python -O removes these calls. "
             "Instead callers should raise AssertionError()."
+)
+B012 = Error(
+    message="B012 Shebang is present but the file is not executable."
+)
+B013 = Error(
+    message="B013 The file is executable but no shebang is present."
 )
 
 
