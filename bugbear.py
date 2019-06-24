@@ -45,8 +45,9 @@ class BugBearChecker:
         """
         for lineno, line in enumerate(self.lines, start=1):
             length = len(line) - 1
-            if length > 1.1 * self.max_line_length:
-                yield B950(lineno, length, vars=(length, self.max_line_length))
+            adjusted_max_length = round(1.1 * self.max_line_length)
+            if length > adjusted_max_length:
+                yield B950(lineno, length, vars=(length, adjusted_max_length))
 
     @classmethod
     def adapt_error(cls, e):
