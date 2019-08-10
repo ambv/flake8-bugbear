@@ -6,7 +6,7 @@ flake8-bugbear
     :target: https://travis-ci.org/PyCQA/flake8-bugbear
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/python/black
+    :target: https://github.com/psf/black
 
 A plugin for Flake8 finding likely bugs and design problems in your
 program.  Contains warnings that don't belong in pyflakes and
