@@ -237,6 +237,11 @@ MIT
 Change Log
 ----------
 
+19.8.1
+~~~~~~
+
+* Include `.flake8` + sync `setup.cfg` for sdist builds
+
 19.8.0
 ~~~~~~
 

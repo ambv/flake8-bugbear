@@ -1,2 +1,2 @@
-include *.rst LICENSE
+include .flake8 *.rst LICENSE
 recursive-include tests *.txt *.py
