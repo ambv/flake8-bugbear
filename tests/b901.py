@@ -62,7 +62,7 @@ def not_broken6():
 
 
 def not_broken7():
-    x = (yield from [])
+    x = yield from []
     return x
 
 
