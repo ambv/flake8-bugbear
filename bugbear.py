@@ -497,7 +497,7 @@ B007 = Error(
     "If this is intended, start the name with an underscore."
 )
 B008 = Error(
-    message="B008: Do not perform function calls in argument defaults.  The call is "
+    message="B008 Do not perform function calls in argument defaults.  The call is "
     "performed only once at function definition time. All calls to your "
     "function will reuse the result of that definition-time function call.  If "
     "this is intended, assign the function call to a module-level variable and "
