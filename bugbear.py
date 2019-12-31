@@ -226,6 +226,10 @@ class BugBearVisitor(ast.NodeVisitor):
         self.check_for_b903(node)
         self.generic_visit(node)
 
+    def visit_Try(self, node):
+        self.check_for_b012(node)
+        self.generic_visit(node)
+
     def compose_call_path(self, node):
         if isinstance(node, ast.Attribute):
             yield from self.compose_call_path(node.value)
@@ -279,6 +283,20 @@ class BugBearVisitor(ast.NodeVisitor):
     def check_for_b011(self, node):
         if isinstance(node.test, ast.NameConstant) and node.test.value is False:
             self.errors.append(B011(node.lineno, node.col_offset))
+
+    def check_for_b012(self, node):
+        def _loop(node):
+            if isinstance(node, (ast.AsyncFunctionDef, ast.FunctionDef)):
+                return
+
+            if isinstance(node, (ast.Return, ast.Continue, ast.Break)):
+                self.errors.append(B012(node.lineno, node.col_offset))
+
+            for child in ast.iter_child_nodes(node):
+                _loop(child)
+
+        for child in node.finalbody:
+            _loop(child)
 
     def walk_function_body(self, node):
         def _loop(parent, node):
@@ -516,7 +534,11 @@ B011 = Error(
     message="B011 Do not call assert False since python -O removes these calls. "
     "Instead callers should raise AssertionError()."
 )
-
+B012 = Error(
+    message="B012 return/continue/break inside finally blocks cause exceptions "
+    "to be silenced. Exceptions should be silenced in except blocks. Control "
+    "statements can be moved outside the finally block."
+)
 
 # Those could be false positives but it's more dangerous to let them slip
 # through if they're not.

@@ -100,6 +100,11 @@ using ``setattr`` if you know the attribute name ahead of time.
 **B011**: Do not call `assert False` since `python -O` removes these calls.
 Instead callers should `raise AssertionError()`.
 
+**B012**: Use of `break`, `continue` or `return` inside `finally` blocks will
+silence exceptions or override return values from the `try` or `except` blocks.
+To silence an exception, do it explicitly in the `except` block. To properly use
+a `break`, `continue` or `return` refactor your code so these statements are not
+in the `finally` block.
 
 Python 3 compatibility warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
