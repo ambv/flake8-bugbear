@@ -216,27 +216,7 @@ Tests
 
 Just run::
 
-    python setup.py test
-
-
-OMG, this is Python 3 only!
----------------------------
-
-Relax, you can run ``flake8`` with all popular plugins as a *tool*
-perfectly fine under Python 3.5+ even if you want to analyze Python 2
-code.  This way you'll be able to parse all of the new syntax supported
-on Python 3 but also *effectively all* the Python 2 syntax at the same
-time.
-
-If you're still invested in Python 2, there might be a small subset of
-deprecated syntax that you'd have to abandon... but you're already doing
-that, right?  `six <https://pypi.org/project/six/>`_ or
-`python-future <https://pypi.org/project/future/>`_ bridge the gaps.
-
-By making the code exclusively Python 3.5+, I'm able to focus on the
-quality of the checks and re-use all the nice features of the new
-releases (check out `pathlib <https://docs.python.org/3/library/pathlib.html>`_)
-instead of wasting cycles on Unicode compatibility, etc.
+    python tests/test_bugbear.py
 
 
 License
