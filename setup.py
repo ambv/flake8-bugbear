@@ -7,7 +7,7 @@ from setuptools import setup
 import sys
 
 
-assert sys.version_info >= (3, 5, 0), "bugbear requires Python 3.5+"
+assert sys.version_info >= (3, 6, 0), "bugbear requires Python 3.6+"
 
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
@@ -37,7 +37,7 @@ setup(
     license="MIT",
     py_modules=["bugbear"],
     zip_safe=False,
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     install_requires=["flake8 >= 3.0.0", "attrs"],
     test_suite="tests.test_bugbear",
     classifiers=[
@@ -49,9 +49,9 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3 :: Only",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Quality Assurance",
