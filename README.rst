@@ -228,6 +228,12 @@ MIT
 Change Log
 ----------
 
+20.1.0
+~~~~~~
+
+* Warn about continue/return/break in finally block (#100)
+* Removed a colon from the descriptive message in B008. (#96)
+
 19.8.0
 ~~~~~~
 
