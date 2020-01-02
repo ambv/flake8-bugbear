@@ -217,7 +217,7 @@ class BugbearTestCase(unittest.TestCase):
         )
         self.assertEqual(proc.returncode, 0, proc.stdout.decode("utf8"))
         self.assertEqual(proc.stdout, b"")
-        # self.assertEqual(proc.stderr, b"")
+        self.assertEqual(proc.stderr, b"")
 
     def test_selfclean_test_bugbear(self):
         filename = Path(__file__).absolute()
@@ -229,7 +229,7 @@ class BugbearTestCase(unittest.TestCase):
         )
         self.assertEqual(proc.returncode, 0, proc.stdout.decode("utf8"))
         self.assertEqual(proc.stdout, b"")
-        # self.assertEqual(proc.stderr, b'')
+        self.assertEqual(proc.stderr, b"")
 
 
 if __name__ == "__main__":

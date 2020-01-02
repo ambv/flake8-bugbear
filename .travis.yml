@@ -15,7 +15,7 @@ matrix:
 
 install:
   - pip install --upgrade pip setuptools coverage black
-  - pip install .
+  - pip install -e .
 
 script:
   - coverage run tests/test_bugbear.py
