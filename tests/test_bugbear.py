@@ -16,6 +16,8 @@ from bugbear import (
     B010,
     B011,
     B012,
+    B013,
+    B014,
     B301,
     B302,
     B303,
@@ -39,7 +41,12 @@ class BugbearTestCase(unittest.TestCase):
         filename = Path(__file__).absolute().parent / "b001.py"
         bbc = BugBearChecker(filename=str(filename))
         errors = list(bbc.run())
-        self.assertEqual(errors, self.errors(B001(8, 0), B001(40, 4)))
+        expected = self.errors(
+            B001(8, 0, vars=("bare `except:`",)),
+            B001(40, 4, vars=("bare `except:`",)),
+            B001(54, 0, vars=("`except ():`",)),
+        )
+        self.assertEqual(errors, expected)
 
     def test_b002(self):
         filename = Path(__file__).absolute().parent / "b002.py"
@@ -136,6 +143,28 @@ class BugbearTestCase(unittest.TestCase):
             B012(95, 8),
         ]
         self.assertEqual(errors, self.errors(*all_errors))
+
+    def test_b013(self):
+        filename = Path(__file__).absolute().parent / "b013.py"
+        bbc = BugBearChecker(filename=str(filename))
+        errors = list(bbc.run())
+        expected = self.errors(
+            B013(10, 0, vars=("ValueError",)), B013(28, 0, vars=("re.error",))
+        )
+        self.assertEqual(errors, expected)
+
+    def test_b014(self):
+        filename = Path(__file__).absolute().parent / "b014.py"
+        bbc = BugBearChecker(filename=str(filename))
+        errors = list(bbc.run())
+        expected = self.errors(
+            B014(10, 0, vars=("Exception, TypeError", "", "Exception")),
+            B014(16, 0, vars=("OSError, OSError", " as err", "OSError")),
+            B014(27, 0, vars=("MyError, MyError", "", "MyError")),
+            B014(41, 0, vars=("MyError, BaseException", " as e", "BaseException")),
+            B014(48, 0, vars=("re.error, re.error", "", "re.error")),
+        )
+        self.assertEqual(errors, expected)
 
     def test_b301_b302_b305(self):
         filename = Path(__file__).absolute().parent / "b301_b302_b305.py"

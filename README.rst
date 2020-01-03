@@ -106,6 +106,13 @@ To silence an exception, do it explicitly in the `except` block. To properly use
 a `break`, `continue` or `return` refactor your code so these statements are not
 in the `finally` block.
 
+**B013**: A length-one tuple literal is redundant.  Write `except SomeError:`
+instead of `except (SomeError,):`.
+
+**B014**: Redundant exception types in `except (Exception, TypeError):`.
+Write `except Exception:`, which catches exactly the same exceptions.
+
+
 Python 3 compatibility warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -227,6 +234,12 @@ MIT
 
 Change Log
 ----------
+
+Future
+~~~~~~
+
+* For B001, also check for ``except ():``
+* Introduce B013 and B014 to check tuples in ``except (..., ):`` statements
 
 20.1.0
 ~~~~~~

@@ -1,4 +1,5 @@
 import ast
+import builtins
 from collections import namedtuple
 from contextlib import suppress
 from functools import lru_cache, partial
@@ -136,7 +137,50 @@ class BugBearVisitor(ast.NodeVisitor):
 
     def visit_ExceptHandler(self, node):
         if node.type is None:
-            self.errors.append(B001(node.lineno, node.col_offset))
+            self.errors.append(
+                B001(node.lineno, node.col_offset, vars=("bare `except:`",))
+            )
+        elif isinstance(node.type, ast.Tuple):
+            names = []
+            for e in node.type.elts:
+                if isinstance(e, ast.Name):
+                    names.append(e.id)
+                else:
+                    assert isinstance(e, ast.Attribute)
+                    names.append("{}.{}".format(e.value.id, e.attr))
+            as_ = " as " + node.name if node.name is not None else ""
+            if len(names) == 0:
+                vs = ("`except (){}:`".format(as_),)
+                self.errors.append(B001(node.lineno, node.col_offset, vars=vs))
+            elif len(names) == 1:
+                self.errors.append(B013(node.lineno, node.col_offset, vars=names))
+            else:
+                # See if any of the given exception names could be removed, e.g. from:
+                #    (MyError, MyError)  # duplicate names
+                #    (MyError, BaseException)  # everything derives from the Base
+                #    (Exception, TypeError)  # builtins where one subclasses another
+                # but note that other cases are impractical to hande from the AST.
+                # We expect this is mostly useful for users who do not have the
+                # builtin exception hierarchy memorised, and include a 'shadowed'
+                # subtype without realising that it's redundant.
+                good = sorted(set(names), key=names.index)
+                if "BaseException" in good:
+                    good = ["BaseException"]
+                for name, other in itertools.permutations(tuple(good), 2):
+                    if issubclass(
+                        getattr(builtins, name, type), getattr(builtins, other, ())
+                    ):
+                        if name in good:
+                            good.remove(name)
+                if good != names:
+                    desc = good[0] if len(good) == 1 else "({})".format(", ".join(good))
+                    self.errors.append(
+                        B014(
+                            node.lineno,
+                            node.col_offset,
+                            vars=(", ".join(names), as_, desc),
+                        )
+                    )
         self.generic_visit(node)
 
     def visit_UAdd(self, node):
@@ -456,7 +500,7 @@ Error = partial(partial, error, type=BugBearChecker, vars=())
 
 
 B001 = Error(
-    message="B001 Do not use bare `except:`, it also catches unexpected "
+    message="B001 Do not use {}, it also catches unexpected "
     "events like memory errors, interrupts, system exit, and so on.  "
     "Prefer `except Exception:`.  If you're sure what you're doing, "
     "be explicit and write `except BaseException:`."
@@ -538,6 +582,14 @@ B012 = Error(
     message="B012 return/continue/break inside finally blocks cause exceptions "
     "to be silenced. Exceptions should be silenced in except blocks. Control "
     "statements can be moved outside the finally block."
+)
+B013 = Error(
+    message="B013 A length-one tuple literal is redundant.  "
+    "Write `except {0}:` instead of `except ({0},):`."
+)
+B014 = Error(
+    message="B014 Redundant exception types in `except ({0}){1}:`.  "
+    "Write `except {2}{1}:`, which catches exactly the same exceptions."
 )
 
 # Those could be false positives but it's more dangerous to let them slip
