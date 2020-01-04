@@ -285,18 +285,21 @@ class BugBearVisitor(ast.NodeVisitor):
             self.errors.append(B011(node.lineno, node.col_offset))
 
     def check_for_b012(self, node):
-        def _loop(node):
+        def _loop(node, bad_node_types):
             if isinstance(node, (ast.AsyncFunctionDef, ast.FunctionDef)):
                 return
 
-            if isinstance(node, (ast.Return, ast.Continue, ast.Break)):
+            if isinstance(node, (ast.While, ast.For)):
+                bad_node_types = (ast.Return,)
+
+            elif isinstance(node, bad_node_types):
                 self.errors.append(B012(node.lineno, node.col_offset))
 
             for child in ast.iter_child_nodes(node):
-                _loop(child)
+                _loop(child, bad_node_types)
 
         for child in node.finalbody:
-            _loop(child)
+            _loop(child, (ast.Return, ast.Continue, ast.Break))
 
     def walk_function_body(self, node):
         def _loop(parent, node):

@@ -82,6 +82,18 @@ def h():
                     continue  # no warning
 
 
+def k():
+    try:
+        pass
+    finally:
+        while True:
+            break  # no warning
+        while True:
+            continue  # no warning
+        while True:
+            return  # warning
+
+
 while True:
     try:
         pass
