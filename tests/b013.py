@@ -28,3 +28,9 @@ try:
 except (re.error,):
     # pointless use of tuple with dotted attribute
     pass
+
+try:
+    pass
+except (a.b.c.d, b.c.d):
+    # attribute of attribute, etc.
+    pass

@@ -110,6 +110,15 @@ class BugBearChecker:
         return False
 
 
+def _to_name_str(node):
+    # Turn Name and Attribute nodes to strings, e.g "ValueError" or
+    # "pkg.mod.error", handling any depth of attribute accesses.
+    if isinstance(node, ast.Name):
+        return node.id
+    assert isinstance(node, ast.Attribute)
+    return _to_name_str(node.value) + "." + node.attr
+
+
 @attr.s
 class BugBearVisitor(ast.NodeVisitor):
     filename = attr.ib()
@@ -141,13 +150,7 @@ class BugBearVisitor(ast.NodeVisitor):
                 B001(node.lineno, node.col_offset, vars=("bare `except:`",))
             )
         elif isinstance(node.type, ast.Tuple):
-            names = []
-            for e in node.type.elts:
-                if isinstance(e, ast.Name):
-                    names.append(e.id)
-                else:
-                    assert isinstance(e, ast.Attribute)
-                    names.append("{}.{}".format(e.value.id, e.attr))
+            names = [_to_name_str(e) for e in node.type.elts]
             as_ = " as " + node.name if node.name is not None else ""
             if len(names) == 0:
                 vs = ("`except (){}:`".format(as_),)
