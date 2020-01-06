@@ -1,8 +1,14 @@
+import ast
+import os
 from pathlib import Path
+import site
 import subprocess
 import unittest
 
-from bugbear import BugBearChecker
+from hypothesis import given
+from hypothesmith import from_grammar
+
+from bugbear import BugBearChecker, BugBearVisitor
 from bugbear import (
     B001,
     B002,
@@ -260,6 +266,25 @@ class BugbearTestCase(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stdout.decode("utf8"))
         self.assertEqual(proc.stdout, b"")
         self.assertEqual(proc.stderr, b"")
+
+
+class TestFuzz(unittest.TestCase):
+    @given(from_grammar().map(ast.parse))
+    def test_does_not_crash_on_any_valid_code(self, syntax_tree):
+        # Given any syntatically-valid source code, flake8-bugbear should
+        # not crash.  This tests doesn't check that we do the *right* thing,
+        # just that we don't crash on valid-if-poorly-styled code!
+        BugBearVisitor(filename="<string>", lines=[]).visit(syntax_tree)
+
+    def test_does_not_crash_on_site_code(self):
+        # Because the generator isn't perfect, we'll also test on all the code
+        # we can easily find in our current Python environment - this includes
+        # the standard library, and all installed packages.
+        for base in sorted(set(site.PREFIXES)):
+            for dirname, _, files in os.walk(base):
+                for f in files:
+                    if f.endswith(".py"):
+                        BugBearChecker(filename=str(Path(dirname) / f))
 
 
 if __name__ == "__main__":

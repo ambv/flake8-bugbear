@@ -14,7 +14,7 @@ matrix:
     - python: nightly
 
 install:
-  - pip install --upgrade pip setuptools coverage black
+  - pip install --upgrade pip setuptools coverage black hypothesmith
   - pip install -e .
 
 script:
