@@ -38,7 +38,7 @@ setup(
     py_modules=["bugbear"],
     zip_safe=False,
     python_requires=">=3.6",
-    install_requires=["flake8 >= 3.0.0", "attrs"],
+    install_requires=["flake8 >= 3.0.0", "attrs>=19.2.0"],
     test_suite="tests.test_bugbear",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
