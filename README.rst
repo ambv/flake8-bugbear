@@ -202,11 +202,14 @@ have to explicitly specify all checks you want enabled. For example::
 	max-line-length = 80
 	max-complexity = 12
 	...
+	ignore = E501
 	select = C,E,F,W,B,B901
 
 Note that we're enabling the complexity checks, the PEP8 ``pycodestyle``
 errors and warnings, the pyflakes fatals and all default Bugbear checks.
 Finally, we're also specifying B901 as a check that we want enabled.
+Some checks might need other flake8 checks disabled - e.g. E501 must be
+disabled for B950 to be hit.
 
 If you'd like all optional warnings to be enabled for you (future proof
 your config!), say ``B9`` instead of ``B901``. You will need Flake8 3.2+
