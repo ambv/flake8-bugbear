@@ -5,6 +5,7 @@ from contextlib import suppress
 from functools import lru_cache, partial
 import itertools
 import logging
+import re
 
 import attr
 import pycodestyle
@@ -110,6 +111,16 @@ class BugBearChecker:
         return False
 
 
+def _is_identifier(arg):
+    # Return True if arg is a valid identifier, per
+    # https://docs.python.org/2/reference/lexical_analysis.html#identifiers
+
+    if not isinstance(arg, ast.Str):
+        return False
+
+    return re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", arg.s) is not None
+
+
 def _to_name_str(node):
     # Turn Name and Attribute nodes to strings, e.g "ValueError" or
     # "pkg.mod.error", handling any depth of attribute accesses.
@@ -213,13 +224,13 @@ class BugBearVisitor(ast.NodeVisitor):
                 if (
                     node.func.id == "getattr"
                     and len(node.args) == 2  # noqa: W503
-                    and isinstance(node.args[1], ast.Str)  # noqa: W503
+                    and _is_identifier(node.args[1])  # noqa: W503
                 ):
                     self.errors.append(B009(node.lineno, node.col_offset))
                 elif (
                     node.func.id == "setattr"
                     and len(node.args) == 3  # noqa: W503
-                    and isinstance(node.args[1], ast.Str)  # noqa: W503
+                    and _is_identifier(node.args[1])  # noqa: W503
                 ):
                     self.errors.append(B010(node.lineno, node.col_offset))
 
