@@ -4,6 +4,7 @@ from collections import namedtuple
 from contextlib import suppress
 from functools import lru_cache, partial
 import itertools
+from keyword import iskeyword
 import logging
 import re
 
@@ -225,12 +226,14 @@ class BugBearVisitor(ast.NodeVisitor):
                     node.func.id == "getattr"
                     and len(node.args) == 2  # noqa: W503
                     and _is_identifier(node.args[1])  # noqa: W503
+                    and not iskeyword(node.args[1].s)  # noqa: W503
                 ):
                     self.errors.append(B009(node.lineno, node.col_offset))
                 elif (
                     node.func.id == "setattr"
                     and len(node.args) == 3  # noqa: W503
                     and _is_identifier(node.args[1])  # noqa: W503
+                    and not iskeyword(node.args[1].s)  # noqa: W503
                 ):
                     self.errors.append(B010(node.lineno, node.col_offset))
 

@@ -1,7 +1,7 @@
 """
 Should emit:
-B009 - Line 16, 17, 18
-B010 - Line 26, 27, 28
+B009 - Line 17, 18, 19
+B010 - Line 28, 29, 30
 """
 
 # Valid getattr usage
@@ -11,6 +11,7 @@ getattr(foo, "bar{foo}".format(foo="a"), None)
 getattr(foo, "bar{foo}".format(foo="a"))
 getattr(foo, bar, None)
 getattr(foo, "123abc")
+getattr(foo, "except")
 
 # Invalid usage
 getattr(foo, "bar")
@@ -21,6 +22,7 @@ getattr(foo, "abc123")
 setattr(foo, bar, None)
 setattr(foo, "bar{foo}".format(foo="a"), None)
 setattr(foo, "123abc", None)
+getattr(foo, "except", None)
 
 # Invalid usage
 setattr(foo, "bar", None)
