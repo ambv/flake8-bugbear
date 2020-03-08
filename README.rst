@@ -97,20 +97,20 @@ ahead of time.
 property access: ``x.attr = val``. There is no additional safety in
 using ``setattr`` if you know the attribute name ahead of time.
 
-**B011**: Do not call `assert False` since `python -O` removes these calls.
-Instead callers should `raise AssertionError()`.
+**B011**: Do not call ``assert False`` since ``python -O`` removes these calls.
+Instead callers should ``raise AssertionError()``.
 
-**B012**: Use of `break`, `continue` or `return` inside `finally` blocks will
-silence exceptions or override return values from the `try` or `except` blocks.
-To silence an exception, do it explicitly in the `except` block. To properly use
-a `break`, `continue` or `return` refactor your code so these statements are not
-in the `finally` block.
+**B012**: Use of ``break``, ``continue`` or ``return`` inside ``finally`` blocks will
+silence exceptions or override return values from the ``try`` or ``except`` blocks.
+To silence an exception, do it explicitly in the ``except`` block. To properly use
+a ``break``, ``continue`` or ``return`` refactor your code so these statements are not
+in the ``finally`` block.
 
-**B013**: A length-one tuple literal is redundant.  Write `except SomeError:`
-instead of `except (SomeError,):`.
+**B013**: A length-one tuple literal is redundant.  Write ``except SomeError:``
+instead of ``except (SomeError,):``.
 
-**B014**: Redundant exception types in `except (Exception, TypeError):`.
-Write `except Exception:`, which catches exactly the same exceptions.
+**B014**: Redundant exception types in ``except (Exception, TypeError):``.
+Write ``except Exception:``, which catches exactly the same exceptions.
 
 
 Python 3 compatibility warnings
