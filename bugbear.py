@@ -213,7 +213,7 @@ class BugBearVisitor(ast.NodeVisitor):
                 B904(
                     originator.lineno,
                     originator.col_offset,
-                    vars=(unaryop.operand.left.id, unaryop.operand.comparators[0].id)
+                    vars=()
                 )
             )
 
@@ -737,7 +737,7 @@ B903 = Error(
 B904 = Error(
     message=(
         "B904 Avoid negating an equality operator. "
-        "Write `{0} != {1}` instead of `not {0} == {1}`."
+        "Write `foo != bar` instead of `not foo == bar`."
     )
 )
 

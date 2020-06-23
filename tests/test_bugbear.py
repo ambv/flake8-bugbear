@@ -251,7 +251,7 @@ class BugbearTestCase(unittest.TestCase):
         bbc = BugBearChecker(filename=str(filename))
         errors = list(bbc.run())
         expected = self.errors(
-            B904(7, 6, vars=("foo", "bar")),
+            B904(7, 6, vars=()),
         )
         self.assertEqual(errors, expected)
 
