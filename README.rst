@@ -178,6 +178,9 @@ nothing else. If the attributes should be mutable, define the attributes
 in ``__slots__`` to save per-instance memory and to prevent accidentally
 creating additional attributes on instances.
 
+**B904**: Avoid negating an equality operator.  Write ``x != y`` instead of
+``not x == y``.
+
 **B950**: Line too long. This is a pragmatic equivalent of
 ``pycodestyle``'s E501: it considers "max-line-length" but only triggers
 when the value has been exceeded by **more than 10%**. You will no
