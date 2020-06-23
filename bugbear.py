@@ -737,7 +737,7 @@ B903 = Error(
 B904 = Error(
     message=(
         "B904 Avoid negating an equality operator. "
-        "Write `foo != bar` instead of `not foo == bar`."
+        "Write `x != y` instead of `not x == y`."
     )
 )
 
