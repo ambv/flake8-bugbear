@@ -95,7 +95,7 @@ class BugBearChecker:
 
         if self.options is None:
             LOG.info(
-                "Options not provided to Bugbear, optional warning %s selected.", code
+                "Options not provided to Bugbear, optional warning %s selected.", code,
             )
             return True
 
@@ -183,7 +183,7 @@ class BugBearVisitor(ast.NodeVisitor):
                     good = ["BaseException"]
                 for name, other in itertools.permutations(tuple(good), 2):
                     if issubclass(
-                        getattr(builtins, name, type), getattr(builtins, other, ())
+                        getattr(builtins, name, type), getattr(builtins, other, ()),
                     ):
                         if name in good:
                             good.remove(name)
@@ -207,15 +207,11 @@ class BugBearVisitor(ast.NodeVisitor):
 
     def visit_Not(self, node):
         unaryop = self.node_stack[-2:][0]
-        if isinstance(unaryop, ast.UnaryOp) and isinstance(unaryop.operand.ops[0], ast.Eq):
+        if isinstance(unaryop, ast.UnaryOp) and isinstance(
+            unaryop.operand.ops[0], ast.Eq
+        ):
             originator = self.node_window[0]
-            self.errors.append(
-                B904(
-                    originator.lineno,
-                    originator.col_offset,
-                    vars=()
-                )
-            )
+            self.errors.append(B904(originator.lineno, originator.col_offset, vars=()))
 
     def visit_Call(self, node):
         if isinstance(node.func, ast.Attribute):
@@ -470,7 +466,9 @@ class BugBearVisitor(ast.NodeVisitor):
             if not actual_first_arg.startswith(("(", "*")):
                 actual_first_arg = repr(actual_first_arg)
             self.errors.append(
-                B902(lineno, col, vars=(actual_first_arg, kind, expected_first_args[0]))
+                B902(
+                    lineno, col, vars=(actual_first_arg, kind, expected_first_args[0]),
+                )
             )
 
     def check_for_b903(self, node):
@@ -720,7 +718,11 @@ B902 = Error(
         "canonical first argument name in methods, i.e. {}."
     )
 )
-B902.implicit_classmethods = {"__new__", "__init_subclass__", "__class_getitem__"}
+B902.implicit_classmethods = {
+    "__new__",
+    "__init_subclass__",
+    "__class_getitem__",
+}
 B902.self = ["self"]  # it's a list because the first is preferred
 B902.cls = ["cls", "klass"]  # ditto.
 B902.metacls = ["metacls", "metaclass", "typ", "mcs"]  # ditto.
