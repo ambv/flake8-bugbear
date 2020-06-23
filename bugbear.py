@@ -205,6 +205,18 @@ class BugBearVisitor(ast.NodeVisitor):
             self.errors.append(B002(originator.lineno, originator.col_offset))
         self.generic_visit(node)
 
+    def visit_Not(self, node):
+        unaryop = self.node_stack[-2:][0]
+        if isinstance(unaryop, ast.UnaryOp) and isinstance(unaryop.operand.ops[0], ast.Eq):
+            originator = self.node_window[0]
+            self.errors.append(
+                B904(
+                    originator.lineno,
+                    originator.col_offset,
+                    vars=(unaryop.operand.left.id, unaryop.operand.comparators[0].id)
+                )
+            )
+
     def visit_Call(self, node):
         if isinstance(node.func, ast.Attribute):
             for bug in (B301, B302, B305):
@@ -722,6 +734,13 @@ B903 = Error(
     )
 )
 
+B904 = Error(
+    message=(
+        "B904 Avoid negating an equality operator. "
+        "Write `{0} != {1}` instead of `not {0} == {1}`."
+    )
+)
+
 B950 = Error(message="B950 line too long ({} > {} characters)")
 
-disabled_by_default = ["B901", "B902", "B903", "B950"]
+disabled_by_default = ["B901", "B902", "B903", "B904", "B950"]
