@@ -35,7 +35,7 @@ python3 -m venv /path/to/venv
 /path/to/venv/bin/pip install --upgrade pip setuptools wheel
 ```
 
-- Then we install flake8-bugbeaer with the dev dependencies
+- Then we install flake8-bugbear with the dev dependencies
 
 ```console
 cd flake8-bugbear
