@@ -14,10 +14,10 @@ matrix:
     - python: nightly
 
 install:
-  - pip install --upgrade pip setuptools coverage black hypothesmith
-  - pip install -e .
+  - pip install --upgrade pip setuptools wheel
+  - pip install -e .[dev]
 
 script:
   - coverage run tests/test_bugbear.py
-  - coverage report -m | grep 'bugbear\.py'
+  - coverage report -m
   - black --check .

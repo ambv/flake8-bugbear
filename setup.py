@@ -59,5 +59,6 @@ setup(
         "Topic :: Software Development :: Quality Assurance",
     ],
     entry_points={"flake8.extension": ["B = bugbear:BugBearChecker"]},
+    extras_require={"dev": ["coverage", "black", "hypothesis", "hypothesmith"]},
     project_urls={"Change Log": "https://github.com/PyCQA/flake8-bugbear#change-log"},
 )
