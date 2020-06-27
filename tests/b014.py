@@ -1,6 +1,6 @@
 """
 Should emit:
-B014 - on lines 10, 16, 27, 41, and 48
+B014 - on lines 10, 16, 27, 41, 48, and 55
 """
 
 import re
@@ -47,4 +47,15 @@ try:
     pass
 except (re.error, re.error):
     # Duplicate exception types as attributes
+    pass
+
+
+try:
+    pass
+except (IOError, EnvironmentError, OSError):
+    # Detect if a primary exception and any its aliases are present.
+    #
+    # Since Python 3.3, IOError, EnvironmentError, WindowsError, mmap.error,
+    # socket.error and select.error are aliases of OSError. See PEP 3151 for
+    # more info.
     pass
