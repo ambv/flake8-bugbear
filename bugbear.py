@@ -183,14 +183,12 @@ class BugBearVisitor(ast.NodeVisitor):
                 if "BaseException" in good:
                     good = ["BaseException"]
                 # Find and remove aliases exceptions and only leave the primary alone
-                primaries = [
-                    primary
-                    for primary in B014.exception_aliases.keys()
-                    if primary in good
-                ]
+                primaries = filter(
+                    lambda primary: primary in good, B014.exception_aliases.keys()
+                )
                 for primary in primaries:
                     aliases = B014.exception_aliases[primary]
-                    good = [e for e in good if e not in aliases]
+                    good = list(filter(lambda e: e not in aliases, good))
 
                 for name, other in itertools.permutations(tuple(good), 2):
                     if issubclass(
