@@ -174,6 +174,7 @@ class BugBearVisitor(ast.NodeVisitor):
                 #    (MyError, MyError)  # duplicate names
                 #    (MyError, BaseException)  # everything derives from the Base
                 #    (Exception, TypeError)  # builtins where one subclasses another
+                #    (IOError, OSError)  # IOError is an alias of OSError since Python3.3
                 # but note that other cases are impractical to hande from the AST.
                 # We expect this is mostly useful for users who do not have the
                 # builtin exception hierarchy memorised, and include a 'shadowed'
@@ -181,6 +182,14 @@ class BugBearVisitor(ast.NodeVisitor):
                 good = sorted(set(names), key=names.index)
                 if "BaseException" in good:
                     good = ["BaseException"]
+                # Find and remove aliases exceptions and only leave the primary alone
+                primaries = filter(
+                    lambda primary: primary in good, B014.exception_aliases.keys()
+                )
+                for primary in primaries:
+                    aliases = B014.exception_aliases[primary]
+                    good = list(filter(lambda e: e not in aliases, good))
+
                 for name, other in itertools.permutations(tuple(good), 2):
                     if issubclass(
                         getattr(builtins, name, type), getattr(builtins, other, ()),
@@ -649,6 +658,16 @@ B014 = Error(
         "Write `except {2}{1}:`, which catches exactly the same exceptions."
     )
 )
+B014.exception_aliases = {
+    "OSError": {
+        "IOError",
+        "EnvironmentError",
+        "WindowsError",
+        "mmap.error",
+        "socket.error",
+        "select.error",
+    }
+}
 
 # Those could be false positives but it's more dangerous to let them slip
 # through if they're not.
