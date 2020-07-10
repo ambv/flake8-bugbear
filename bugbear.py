@@ -1,16 +1,15 @@
 import ast
 import builtins
+import itertools
+import logging
+import re
 from collections import namedtuple
 from contextlib import suppress
 from functools import lru_cache, partial
-import itertools
 from keyword import iskeyword
-import logging
-import re
 
 import attr
 import pycodestyle
-
 
 __version__ = "20.1.4"
 
@@ -300,6 +299,9 @@ class BugBearVisitor(ast.NodeVisitor):
         self.check_for_b012(node)
         self.generic_visit(node)
 
+    def visit_Compare(self, node):
+        self.check_for_b015(node)
+
     def compose_call_path(self, node):
         if isinstance(node, ast.Attribute):
             yield from self.compose_call_path(node.value)
@@ -370,6 +372,10 @@ class BugBearVisitor(ast.NodeVisitor):
 
         for child in node.finalbody:
             _loop(child, (ast.Return, ast.Continue, ast.Break))
+
+    def check_for_b015(self, node):
+        if isinstance(self.node_stack[-2], ast.Expr):
+            self.errors.append(B015(node.lineno, node.col_offset))
 
     def walk_function_body(self, node):
         def _loop(parent, node):
@@ -658,6 +664,12 @@ B014.exception_aliases = {
         "select.error",
     }
 }
+B015 = Error(
+    message=(
+        "B015 Pointless comparison. This comparison does nothing but wastes "
+        "CPU instructions. Remove it."
+    )
+)
 
 # Those could be false positives but it's more dangerous to let them slip
 # through if they're not.

@@ -117,6 +117,9 @@ instead of ``except (SomeError,):``.
 **B014**: Redundant exception types in ``except (Exception, TypeError):``.
 Write ``except Exception:``, which catches exactly the same exceptions.
 
+**B015**: Pointless comparison. This comparison does nothing but
+wastes CPU instructions. Remove it.
+
 
 Python 3 compatibility warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
