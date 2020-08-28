@@ -41,13 +41,6 @@ def func(**kwargs):
         # should be except KeyError:
         return
 
-    results = something.call(debug=is_debug)
-    try:
-        results["ok"]
-    except:  # noqa
-        # warning silenced
-        return
-
 
 try:
     pass

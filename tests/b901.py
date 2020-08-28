@@ -45,11 +45,6 @@ async def not_broken4():
     return 1
 
 
-def actually_not_broken():
-    yield 2
-    return 1  # noqa
-
-
 def not_broken5():
     def inner():
         return 2

@@ -51,7 +51,7 @@ class BugbearTestCase(unittest.TestCase):
         expected = self.errors(
             B001(8, 0, vars=("bare `except:`",)),
             B001(40, 4, vars=("bare `except:`",)),
-            B001(54, 0, vars=("`except ():`",)),
+            B001(47, 0, vars=("`except ():`",)),
         )
         self.assertEqual(errors, expected)
 
