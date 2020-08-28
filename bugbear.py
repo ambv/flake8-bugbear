@@ -34,9 +34,6 @@ class BugBearChecker:
         visitor = self.visitor(filename=self.filename, lines=self.lines)
         visitor.visit(self.tree)
         for e in itertools.chain(visitor.errors, self.gen_line_based_checks()):
-            if pycodestyle.noqa(self.lines[e.lineno - 1]):
-                continue
-
             if self.should_warn(e.message[:4]):
                 yield self.adapt_error(e)
 
