@@ -66,4 +66,3 @@ try:
 except (MyException, NotImplemented):
     # NotImplemented is not an exception, let's not crash on it.
     pass
-
