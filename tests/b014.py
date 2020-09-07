@@ -59,3 +59,10 @@ except (IOError, EnvironmentError, OSError):
     # socket.error and select.error are aliases of OSError. See PEP 3151 for
     # more info.
     pass
+
+
+try:
+    pass
+except (MyException, NotImplemented):
+    # NotImplemented is not an exception, let's not crash on it.
+    pass

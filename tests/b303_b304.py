@@ -28,7 +28,11 @@ class CustomClassWithBrokenMetaclass:
     (a, b, c) = list(range(3))
     # it's different than this
     a, b, c = list(range(3))
-    a, b, c, = list(range(3))
+    (
+        a,
+        b,
+        c,
+    ) = list(range(3))
     # and different than this
     (a, b), c = list(range(3))
     a, *b, c = [1, 2, 3, 4, 5]
