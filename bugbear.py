@@ -312,6 +312,10 @@ class BugBearVisitor(ast.NodeVisitor):
     def visit_Compare(self, node):
         self.check_for_b015(node)
 
+    def visit_Raise(self, node):
+        self.check_for_b016(node)
+        self.generic_visit(node)
+
     def compose_call_path(self, node):
         if isinstance(node, ast.Attribute):
             yield from self.compose_call_path(node.value)
@@ -386,6 +390,10 @@ class BugBearVisitor(ast.NodeVisitor):
     def check_for_b015(self, node):
         if isinstance(self.node_stack[-2], ast.Expr):
             self.errors.append(B015(node.lineno, node.col_offset))
+
+    def check_for_b016(self, node):
+        if isinstance(node.exc, (ast.NameConstant, ast.Num, ast.Str)):
+            self.errors.append(B016(node.lineno, node.col_offset))
 
     def walk_function_body(self, node):
         def _loop(parent, node):
@@ -678,6 +686,12 @@ B015 = Error(
     message=(
         "B015 Pointless comparison. This comparison does nothing but wastes "
         "CPU instructions. Remove it."
+    )
+)
+B016 = Error(
+    message=(
+        "B016 Cannot raise a literal. Did you intend to return it or raise "
+        "an Exception?"
     )
 )
 

@@ -120,6 +120,9 @@ Write ``except Exception:``, which catches exactly the same exceptions.
 **B015**: Pointless comparison. This comparison does nothing but
 wastes CPU instructions. Remove it.
 
+**B016**: Cannot raise a literal. Did you intend to return it or raise
+an Exception?
+
 
 Python 3 compatibility warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -245,6 +248,11 @@ MIT
 
 Change Log
 ----------
+
+Next version
+~~~~~~~~~~~~
+
+* Introduce B016 to check for raising a literal. (#141)
 
 20.1.4
 ~~~~~~
