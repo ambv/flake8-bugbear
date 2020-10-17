@@ -311,6 +311,7 @@ class BugBearVisitor(ast.NodeVisitor):
 
     def visit_Compare(self, node):
         self.check_for_b015(node)
+        self.generic_visit(node)
 
     def compose_call_path(self, node):
         if isinstance(node, ast.Attribute):
