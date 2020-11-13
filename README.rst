@@ -253,6 +253,7 @@ Next version
 ~~~~~~~~~~~~
 
 * Introduce B016 to check for raising a literal. (#141)
+* Exclude types.MappingProxyType() from B008. (#144)
 
 20.1.4
 ~~~~~~
