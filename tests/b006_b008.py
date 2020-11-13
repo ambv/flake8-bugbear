@@ -1,6 +1,8 @@
 import collections
 import logging
 import time
+import types
+from types import MappingProxyType
 
 
 def this_is_okay(value=(1, 2, 3)):
@@ -8,6 +10,16 @@ def this_is_okay(value=(1, 2, 3)):
 
 
 def and_this_also(value=tuple()):
+    pass
+
+
+def frozenset_also_okay(value=frozenset()):
+    pass
+
+
+def mappingproxytype_okay(
+    value=MappingProxyType({}), value2=types.MappingProxyType({})
+):
     pass
 
 
