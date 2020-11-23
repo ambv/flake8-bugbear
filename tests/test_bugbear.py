@@ -5,7 +5,7 @@ import site
 import subprocess
 import unittest
 
-from hypothesis import given
+from hypothesis import HealthCheck, given, settings
 from hypothesmith import from_grammar
 
 from bugbear import BugBearChecker, BugBearVisitor
@@ -298,6 +298,7 @@ class BugbearTestCase(unittest.TestCase):
 
 
 class TestFuzz(unittest.TestCase):
+    @settings(suppress_health_check=[HealthCheck.too_slow])
     @given(from_grammar().map(ast.parse))
     def test_does_not_crash_on_any_valid_code(self, syntax_tree):
         # Given any syntatically-valid source code, flake8-bugbear should
