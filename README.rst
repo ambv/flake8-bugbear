@@ -249,9 +249,13 @@ MIT
 Change Log
 ----------
 
-Next version
+20.11.1
 ~~~~~~~~~~~~
 
+* Support exception aliases properly in B014 (#129)
+* Add B015: Pointless comparison (#130)
+* Remove check for # noqa comments (#134)
+* Ignore exception classes which are not types (#135)
 * Introduce B016 to check for raising a literal. (#141)
 * Exclude types.MappingProxyType() from B008. (#144)
 
