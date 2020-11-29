@@ -118,7 +118,7 @@ instead of ``except (SomeError,):``.
 Write ``except Exception:``, which catches exactly the same exceptions.
 
 **B015**: Pointless comparison. This comparison does nothing but
-wastes CPU instructions. Remove it.
+waste CPU instructions. Either prepend ``assert`` or remove it.
 
 **B016**: Cannot raise a literal. Did you intend to return it or raise
 an Exception?

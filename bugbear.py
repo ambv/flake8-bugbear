@@ -687,8 +687,8 @@ B014.exception_aliases = {
 }
 B015 = Error(
     message=(
-        "B015 Pointless comparison. This comparison does nothing but wastes "
-        "CPU instructions. Remove it."
+        "B015 Pointless comparison. This comparison does nothing but waste "
+        "CPU instructions. Either prepend `assert` or remove it."
     )
 )
 B016 = Error(
