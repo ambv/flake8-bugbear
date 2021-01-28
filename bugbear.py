@@ -3,6 +3,7 @@ import builtins
 import itertools
 import logging
 import re
+import sys
 from collections import namedtuple
 from contextlib import suppress
 from functools import lru_cache, partial
@@ -350,7 +351,34 @@ class BugBearVisitor(ast.NodeVisitor):
                 if call_path in B006.mutable_calls:
                     self.errors.append(B006(default.lineno, default.col_offset))
                 elif call_path not in B008.immutable_calls:
-                    self.errors.append(B008(default.lineno, default.col_offset))
+                    # Check if function call is actually a float infinity/NaN literal
+                    if call_path == "float" and len(default.args) == 1:
+                        float_arg = default.args[0]
+                        if sys.version_info < (3, 8, 0):
+                            # NOTE: pre-3.8, string literals are represented with ast.Str
+                            if isinstance(float_arg, ast.Str):
+                                str_val = float_arg.s
+                            else:
+                                str_val = ""
+                        else:
+                            # NOTE: post-3.8, string literals are represented with ast.Constant
+                            if isinstance(float_arg, ast.Constant):
+                                str_val = float_arg.value
+                                if not isinstance(str_val, str):
+                                    str_val = ""
+                            else:
+                                str_val = ""
+
+                        # NOTE: regex derived from documentation at:
+                        # https://docs.python.org/3/library/functions.html#float
+                        inf_nan_regex = r"^[+-]?(inf|infinity|nan)$"
+                        re_result = re.search(inf_nan_regex, str_val.lower())
+                        is_float_literal = re_result is not None
+                    else:
+                        is_float_literal = False
+
+                    if not is_float_literal:
+                        self.errors.append(B008(default.lineno, default.col_offset))
 
     def check_for_b007(self, node):
         targets = NameFinder()

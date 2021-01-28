@@ -66,3 +66,35 @@ def kwonlyargs_immutable(*, value=()):
 
 def kwonlyargs_mutable(*, value=[]):
     ...
+
+
+def float_inf_okay(value=float("inf")):
+    pass
+
+
+def float_infinity_okay(value=float("infinity")):
+    pass
+
+
+def float_plus_infinity_okay(value=float("+infinity")):
+    pass
+
+
+def float_minus_inf_okay(value=float("-inf")):
+    pass
+
+
+def float_nan_okay(value=float("nan")):
+    pass
+
+
+def float_minus_NaN_okay(value=float("-NaN")):
+    pass
+
+
+def float_int_is_wrong(value=float(3)):
+    pass
+
+
+def float_str_not_inf_or_nan_is_wrong(value=float("3.14")):
+    pass
