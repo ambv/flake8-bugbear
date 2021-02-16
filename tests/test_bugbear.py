@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 import site
 import subprocess
+import sys
 import unittest
 
 from hypothesis import HealthCheck, given, settings
@@ -242,6 +243,27 @@ class BugbearTestCase(unittest.TestCase):
 
     def test_b902(self):
         filename = Path(__file__).absolute().parent / "b902.py"
+        bbc = BugBearChecker(filename=str(filename))
+        errors = list(bbc.run())
+        self.assertEqual(
+            errors,
+            self.errors(
+                B902(29, 17, vars=("'i_am_special'", "instance", "self")),
+                B902(32, 30, vars=("'cls'", "instance", "self")),
+                B902(35, 4, vars=("(none)", "instance", "self")),
+                B902(39, 12, vars=("'self'", "class", "cls")),
+                B902(42, 22, vars=("*args", "instance", "self")),
+                B902(48, 30, vars=("**kwargs", "instance", "self")),
+                B902(51, 32, vars=("*, self", "instance", "self")),
+                B902(54, 44, vars=("*, self", "instance", "self")),
+                B902(68, 17, vars=("'self'", "metaclass instance", "cls")),
+                B902(72, 20, vars=("'cls'", "metaclass class", "metacls")),
+            ),
+        )
+
+    @unittest.skipIf(sys.version_info < (3, 8), "requires 3.8+")
+    def test_b902_py38(self):
+        filename = Path(__file__).absolute().parent / "b902_py38.py"
         bbc = BugBearChecker(filename=str(filename))
         errors = list(bbc.run())
         self.assertEqual(

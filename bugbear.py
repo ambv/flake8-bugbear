@@ -459,7 +459,7 @@ class BugBearVisitor(ast.NodeVisitor):
                 expected_first_args = B902.self
                 kind = "instance"
 
-        args = node.args.args
+        args = getattr(node.args, "posonlyargs", []) + node.args.args
         vararg = node.args.vararg
         kwarg = node.args.kwarg
         kwonlyargs = node.args.kwonlyargs
