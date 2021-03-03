@@ -249,6 +249,13 @@ MIT
 Change Log
 ----------
 
+21.3.1
+~~~~~~
+
+* Fix grammar in B015 (#150)
+* Make sure float infinity/NaN does not trigger B008 (#155)
+* Handle positional-only args in class methods (#158)
+
 20.11.1
 ~~~~~~~~~~~~
 
