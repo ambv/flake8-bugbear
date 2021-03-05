@@ -124,8 +124,10 @@ def _to_name_str(node):
     # "pkg.mod.error", handling any depth of attribute accesses.
     if isinstance(node, ast.Name):
         return node.id
-    assert isinstance(node, ast.Attribute)
-    return _to_name_str(node.value) + "." + node.attr
+    try:
+        return _to_name_str(node.value) + "." + node.attr
+    except AttributeError:
+        return _to_name_str(node.value)
 
 
 def _typesafe_issubclass(cls, class_or_tuple):
