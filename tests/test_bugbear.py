@@ -340,6 +340,20 @@ class TestFuzz(unittest.TestCase):
                     if f.endswith(".py"):
                         BugBearChecker(filename=str(Path(dirname) / f))
 
+    def test_does_not_crash_on_tuple_expansion_in_except_statement(self):
+        # akin to test_does_not_crash_on_any_valid_code
+        # but targets a rare case that's not covered by hypothesmith.from_grammar
+        # see https://github.com/PyCQA/flake8-bugbear/issues/153
+        syntax_tree = ast.parse(
+            "grey_list = (ValueError,)\n"
+            "black_list = (TypeError,)\n"
+            "try:\n"
+            "    int('1e3')\n"
+            "except (*grey_list, *black_list):\n"
+            "     print('error caught')"
+        )
+        BugBearVisitor(filename="<string>", lines=[]).visit(syntax_tree)
+
 
 if __name__ == "__main__":
     unittest.main()
