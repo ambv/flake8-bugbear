@@ -12,7 +12,7 @@ from keyword import iskeyword
 import attr
 import pycodestyle
 
-__version__ = "21.3.2"
+__version__ = "21.3.3"
 
 LOG = logging.getLogger("flake8.bugbear")
 
@@ -317,6 +317,10 @@ class BugBearVisitor(ast.NodeVisitor):
         self.check_for_b016(node)
         self.generic_visit(node)
 
+    def visit_With(self, node):
+        self.check_for_b017(node)
+        self.generic_visit(node)
+
     def compose_call_path(self, node):
         if isinstance(node, ast.Attribute):
             yield from self.compose_call_path(node.value)
@@ -422,6 +426,26 @@ class BugBearVisitor(ast.NodeVisitor):
     def check_for_b016(self, node):
         if isinstance(node.exc, (ast.NameConstant, ast.Num, ast.Str)):
             self.errors.append(B016(node.lineno, node.col_offset))
+
+    def check_for_b017(self, node):
+        """Checks for use of the evil syntax 'with assertRaises(Exception):'
+
+        This form of assertRaises will catch everything that subclasses
+        Exception, which happens to be the vast majority of Python internal
+        errors, including the ones raised when a non-existing method/function
+        is called, or a function is called with an invalid dictionary key
+        lookup.
+        """
+        item = node.items[0]
+        item_context = item.context_expr
+        if (
+            hasattr(item_context.func, "attr")
+            and item_context.func.attr == "assertRaises"  # noqa W503
+            and len(item_context.args) == 1  # noqa W503
+            and item_context.args[0].id == "Exception"  # noqa W503
+            and not item.optional_vars  # noqa W503
+        ):
+            self.errors.append(B017(node.lineno, node.col_offset))
 
     def walk_function_body(self, node):
         def _loop(parent, node):
@@ -725,6 +749,15 @@ B016 = Error(
     message=(
         "B016 Cannot raise a literal. Did you intend to return it or raise "
         "an Exception?"
+    )
+)
+B017 = Error(
+    message=(
+        "B017 assertRaises(Exception): should be considered evil. "
+        "It can lead to your test passing even if the code being tested is "
+        "never executed due to a typo. Either assert for a more specific "
+        "exception (builtin or custom), use assertRaisesRegex, or use the "
+        "context manager form of assertRaises."
     )
 )
 
