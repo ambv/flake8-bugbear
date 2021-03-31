@@ -123,6 +123,13 @@ waste CPU instructions. Either prepend ``assert`` or remove it.
 **B016**: Cannot raise a literal. Did you intend to return it or raise
 an Exception?
 
+**B017**: ``self.assertRaises(Exception):`` should be considered evil. It can lead 
+to your test passing even if the code being tested is never executed due to a typo. 
+Either assert for a more specific exception (builtin or custom), use 
+``assertRaisesRegex``, or use the context manager form of assertRaises
+(``with self.assertRaises(Exception) as ex:``) with an assertion against the
+data available in ``ex``.
+
 
 Python 3 compatibility warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -249,6 +256,11 @@ MIT
 Change Log
 ----------
 
+21.4.1
+~~~~~~
+
+* Add B017: check for gotta-catch-em-all assertRaises(Exception)
+  
 21.3.2
 ~~~~~~
 
