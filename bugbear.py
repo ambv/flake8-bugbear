@@ -10,6 +10,7 @@ from functools import lru_cache, partial
 from keyword import iskeyword
 
 import attr
+
 import pycodestyle
 
 __version__ = "21.4.2"
@@ -443,6 +444,7 @@ class BugBearVisitor(ast.NodeVisitor):
             and hasattr(item_context.func, "attr")  # noqa W503
             and item_context.func.attr == "assertRaises"  # noqa W503
             and len(item_context.args) == 1  # noqa W503
+            and isinstance(item_context.args[0], ast.Name)  # noqa W503
             and item_context.args[0].id == "Exception"  # noqa W503
             and not item.optional_vars  # noqa W503
         ):
@@ -468,9 +470,7 @@ class BugBearVisitor(ast.NodeVisitor):
 
         for parent, x in self.walk_function_body(node):
             # Only consider yield when it is part of an Expr statement.
-            if isinstance(parent, ast.Expr) and isinstance(
-                x, (ast.Yield, ast.YieldFrom)
-            ):
+            if isinstance(parent, ast.Expr) and isinstance(x, (ast.Yield, ast.YieldFrom)):
                 has_yield = True
 
             if isinstance(x, ast.Return) and x.value is not None:
