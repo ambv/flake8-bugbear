@@ -1,9 +1,8 @@
 """
 Should emit:
-B017 - on lines 10
+B017 - on lines 17
 """
 import unittest
-
 
 CONSTANT = True
 
