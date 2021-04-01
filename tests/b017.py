@@ -10,7 +10,7 @@ CONSTANT = True
 
 def something_else() -> None:
     for i in (1, 2, 3):
-       print(i)
+        print(i)
 
 
 class Foobar(unittest.TestCase):
