@@ -12,8 +12,10 @@ def something_else() -> None:
     for i in (1, 2, 3):
         print(i)
 
+
 class Foo:
     pass
+
 
 class Foobar(unittest.TestCase):
     def evil_raises(self) -> None:
