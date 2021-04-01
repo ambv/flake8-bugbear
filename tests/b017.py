@@ -1,8 +1,9 @@
 """
 Should emit:
-B017 - on lines 17
+B017 - on lines 20
 """
 import unittest
+import asyncio
 
 CONSTANT = True
 
@@ -11,6 +12,8 @@ def something_else() -> None:
     for i in (1, 2, 3):
         print(i)
 
+class Foo:
+    pass
 
 class Foobar(unittest.TestCase):
     def evil_raises(self) -> None:
@@ -25,3 +28,7 @@ class Foobar(unittest.TestCase):
     def regex_raises(self) -> None:
         with self.assertRaisesRegex(Exception, "Regex is good"):
             raise Exception("Regex is good")
+
+    def raises_with_absolute_reference(self):
+        with self.assertRaises(asyncio.CancelledError):
+            Foo()
