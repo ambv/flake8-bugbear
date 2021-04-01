@@ -12,7 +12,7 @@ from keyword import iskeyword
 import attr
 import pycodestyle
 
-__version__ = "21.4.1"
+__version__ = "21.4.2"
 
 LOG = logging.getLogger("flake8.bugbear")
 
@@ -439,7 +439,8 @@ class BugBearVisitor(ast.NodeVisitor):
         item = node.items[0]
         item_context = item.context_expr
         if (
-            hasattr(item_context.func, "attr")
+            hasattr(item_context, "func")
+            and hasattr(item_context.func, "attr")  # noqa W503
             and item_context.func.attr == "assertRaises"  # noqa W503
             and len(item_context.args) == 1  # noqa W503
             and item_context.args[0].id == "Exception"  # noqa W503

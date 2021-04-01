@@ -256,6 +256,11 @@ MIT
 Change Log
 ----------
 
+21.4.2
+~~~~~~
+
+* Add another hasattr() check to b017 visit for .func
+
 21.4.1
 ~~~~~~
 

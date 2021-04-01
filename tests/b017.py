@@ -5,6 +5,14 @@ B017 - on lines 10
 import unittest
 
 
+CONSTANT = True
+
+
+def something_else() -> None:
+    for i in (1, 2, 3):
+        print(i)
+
+
 class Foobar(unittest.TestCase):
     def evil_raises(self) -> None:
         with self.assertRaises(Exception):
