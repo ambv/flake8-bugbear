@@ -18,7 +18,7 @@ class AssertRaisesThatShouldTrigger(unittest.TestCase):
     def test_tuple_with_Exception(self) -> None:
         """The use of Exception in the tuple will still catch everything"""
         with self.assertRaises((Exception, ValueError)):
-            raise ValueError("Evil I say!")
+            raise TypeError("Evil I say!")
 
     def test_tuple_with_module_and_Exception(self) -> None:
         """The use of Exception in the tuple will still catch everything"""
