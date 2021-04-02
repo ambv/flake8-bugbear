@@ -4,6 +4,7 @@ import itertools
 import logging
 import re
 import sys
+import typing as t
 from collections import namedtuple
 from contextlib import suppress
 from functools import lru_cache, partial
@@ -13,7 +14,7 @@ import attr
 
 import pycodestyle
 
-__version__ = "21.4.3"
+__version__ = "21.4.4"
 
 LOG = logging.getLogger("flake8.bugbear")
 
@@ -437,18 +438,31 @@ class BugBearVisitor(ast.NodeVisitor):
         is called, or a function is called with an invalid dictionary key
         lookup.
         """
-        item = node.items[0]
-        item_context = item.context_expr
-        if (
-            hasattr(item_context, "func")
-            and hasattr(item_context.func, "attr")  # noqa W503
-            and item_context.func.attr == "assertRaises"  # noqa W503
-            and len(item_context.args) == 1  # noqa W503
-            and isinstance(item_context.args[0], ast.Name)  # noqa W503
-            and item_context.args[0].id == "Exception"  # noqa W503
-            and not item.optional_vars  # noqa W503
-        ):
-            self.errors.append(B017(node.lineno, node.col_offset))
+
+        def exception_finder(nodes: t.List) -> bool:
+            """
+            Knows how to handle ast.Tuple or ast.Name elements present in the
+            node list.
+            """
+            for x in nodes:
+                if isinstance(x, ast.Tuple):
+                    # When the tuple form is used, the Names/Attributes are in
+                    # "elts"
+                    return exception_finder(x.elts)
+                if isinstance(x, ast.Name) and x.id == "Exception":
+                    return True
+            return False
+
+        for item in node.items:
+            if (
+                isinstance(item.context_expr, ast.Call)
+                and isinstance(item.context_expr.func, ast.Attribute)  # noqa W503
+                and item.context_expr.func.value.id == "self"  # noqa W503
+                and item.context_expr.func.attr == "assertRaises"  # noqa W503
+                and not item.optional_vars  # noqa W503
+            ):
+                if exception_finder(item.context_expr.args):
+                    self.errors.append(B017(node.lineno, node.col_offset))
 
     def walk_function_body(self, node):
         def _loop(parent, node):
