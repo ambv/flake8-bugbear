@@ -13,17 +13,17 @@ class AssertRaisesThatShouldTrigger(unittest.TestCase):
     def test_bare_Exception(self) -> None:
         """The use of Exception like this will catch everything"""
         with self.assertRaises(Exception):
-            raise ValueError("Evil I say!")
+            print(k["evil"])  # NameError
 
     def test_tuple_with_Exception(self) -> None:
         """The use of Exception in the tuple will still catch everything"""
         with self.assertRaises((Exception, ValueError)):
-            raise TypeError("Evil I say!")
+            print("I can't spell print", indent=1)  # TypeError
 
     def test_tuple_with_module_and_Exception(self) -> None:
         """The use of Exception in the tuple will still catch everything"""
         with self.assertRaises((Exception, asyncio.CancelledError)):
-            raise ValueError("Evil I say!")
+            self.bogus  # AttributeError
 
 
 class AssertRaisesThatShouldNotTrigger(unittest.TestCase):
