@@ -4,7 +4,7 @@ import itertools
 import logging
 import re
 import sys
-import typing as t
+from typing import List
 from collections import namedtuple
 from contextlib import suppress
 from functools import lru_cache, partial
