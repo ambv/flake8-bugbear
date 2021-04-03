@@ -439,7 +439,7 @@ class BugBearVisitor(ast.NodeVisitor):
         lookup.
         """
 
-        def exception_finder(nodes: t.List) -> bool:
+        def exception_finder(nodes: List) -> bool:
             """
             Knows how to handle ast.Tuple or ast.Name elements present in the
             node list.
