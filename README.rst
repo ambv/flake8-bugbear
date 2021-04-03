@@ -123,9 +123,9 @@ waste CPU instructions. Either prepend ``assert`` or remove it.
 **B016**: Cannot raise a literal. Did you intend to return it or raise
 an Exception?
 
-**B017**: ``self.assertRaises(Exception):`` should be considered evil. It can lead 
-to your test passing even if the code being tested is never executed due to a typo. 
-Either assert for a more specific exception (builtin or custom), use 
+**B017**: ``self.assertRaises(Exception):`` should be considered evil. It can lead
+to your test passing even if the code being tested is never executed due to a typo.
+Either assert for a more specific exception (builtin or custom), use
 ``assertRaisesRegex``, or use the context manager form of assertRaises
 (``with self.assertRaises(Exception) as ex:``) with an assertion against the
 data available in ``ex``.
@@ -256,10 +256,15 @@ MIT
 Change Log
 ----------
 
+21.4.4
+~~~~~~
+
+* Rewrite B017 conditional to be more robust, expand coverage
+
 21.4.3
 ~~~~~~
 
-* Verify the element in item_context.args is of type ast.Name for b017 
+* Verify the element in item_context.args is of type ast.Name for b017
 
 21.4.2
 ~~~~~~
@@ -270,7 +275,7 @@ Change Log
 ~~~~~~
 
 * Add B017: check for gotta-catch-em-all assertRaises(Exception)
-  
+
 21.3.2
 ~~~~~~
 
